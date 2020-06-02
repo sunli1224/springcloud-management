@@ -1,0 +1,70 @@
+spring:
+  profiles:
+    active: user
+
+upload:
+  file:
+    path: E:\springBootProject\manager-spring-cloud-alibaba\ImagePath\
+
+#spring:
+#  rabbitmq:
+#    port: 5672
+#    host: 123.56.88.242
+#    username: guest
+#    password: guest
+#  application:
+#    name: nacos-user-provider
+#  cloud:
+#    stream:
+#      binders:
+#        defaultRabbit:
+#          type: rabbit
+#          environment:
+#            spring:
+#              rabbitmq:
+#                host: 123.56.88.242
+#                port: 5672
+#                username: guest
+#                password: guest
+#      bindings:
+#        output:
+#          destination: studyExchange
+#          content-type: application/json
+#          binder: local_rabbit
+#        input:
+#          destination: queue.log.messages
+#          content-type: application/json
+#          binder: local_rabbit
+#    nacos:
+#      discovery:
+#        server-addr: 127.0.0.1:8848
+#    sentinel:
+#      transport:
+#        dashboard: localhost:8080
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+
+
+#    active: test  # 测试环境
+#    active: dev  # 开发环境
+
+#spring:
+#  application:
+#    name: nacos-user-provider
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 127.0.0.1:8848
+#    sentinel:
+#      transport:
+#        dashboard: localhost:8080
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/manager-auth-service/manager-auth-service.iml" filepath="$PROJECT_DIR$/manager-auth-service/manager-auth-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/manager-commons/manager-commons.iml" filepath="$PROJECT_DIR$/manager-commons/manager-commons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/manager-dependencies/manager-dependencies.iml" filepath="$PROJECT_DIR$/manager-dependencies/manager-dependencies.iml" />
+      <module fileurl="file://$PROJECT_DIR$/manager-domain/manager-domain.iml" filepath="$PROJECT_DIR$/manager-domain/manager-domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/manager-gateway/manager-gateway.iml" filepath="$PROJECT_DIR$/manager-gateway/manager-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/manager-mapper/manager-mapper.iml" filepath="$PROJECT_DIR$/manager-mapper/manager-mapper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/manager-nacos-consumer/manager-nacos-consumer.iml" filepath="$PROJECT_DIR$/manager-nacos-consumer/manager-nacos-consumer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/manager-nacos-provider/manager-nacos-provider.iml" filepath="$PROJECT_DIR$/manager-nacos-provider/manager-nacos-provider.iml" />
+      <module fileurl="file://$PROJECT_DIR$/manager-nacos-provider01/manager-nacos-provider01.iml" filepath="$PROJECT_DIR$/manager-nacos-provider01/manager-nacos-provider01.iml" />
+      <module fileurl="file://$PROJECT_DIR$/manager-redis-service/manager-redis-service.iml" filepath="$PROJECT_DIR$/manager-redis-service/manager-redis-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/manager-search/manager-search.iml" filepath="$PROJECT_DIR$/manager-search/manager-search.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/manager-spring-cloud-alibaba.iml" filepath="$PROJECT_DIR$/.idea/manager-spring-cloud-alibaba.iml" />
+      <module fileurl="file://$PROJECT_DIR$/manager-updownload-service/manager-updownload-service.iml" filepath="$PROJECT_DIR$/manager-updownload-service/manager-updownload-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mybatis-generator/mybatis-generator.iml" filepath="$PROJECT_DIR$/mybatis-generator/mybatis-generator.iml" />
+    </modules>
+  </component>
+</project>

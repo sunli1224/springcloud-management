@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manager.mapper.EmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.manager.domain.Employee">
+    <!--@mbg.generated generated on Tue Apr 21 14:21:57 CST 2020.-->
+    <!--@Table employee-->
+    <id column="emp_id" jdbcType="INTEGER" property="empId" />
+    <result column="emp_num" jdbcType="VARCHAR" property="empNum" />
+    <result column="emp_name" jdbcType="VARCHAR" property="empName" />
+    <result column="emp_sex" jdbcType="VARCHAR" property="empSex" />
+    <result column="emp_age" jdbcType="INTEGER" property="empAge" />
+    <result column="emp_phone" jdbcType="VARCHAR" property="empPhone" />
+    <result column="emp_address" jdbcType="VARCHAR" property="empAddress" />
+    <result column="emp_position" jdbcType="VARCHAR" property="empPosition" />
+    <result column="emp_floor_id" jdbcType="INTEGER" property="empFloorId" />
+    <result column="emp_del" jdbcType="INTEGER" property="empDel" />
+  </resultMap>
+
+  <resultMap id="BaseEmpFloorMap" type="com.manager.domaindto.EmployeeDto">
+    <id column="emp_id" jdbcType="INTEGER" property="empId" />
+    <result column="emp_num" jdbcType="VARCHAR" property="empNum" />
+    <result column="emp_name" jdbcType="VARCHAR" property="empName" />
+    <result column="emp_sex" jdbcType="VARCHAR" property="empSex" />
+    <result column="emp_age" jdbcType="INTEGER" property="empAge" />
+    <result column="emp_phone" jdbcType="VARCHAR" property="empPhone" />
+    <result column="emp_address" jdbcType="VARCHAR" property="empAddress" />
+    <result column="emp_position" jdbcType="VARCHAR" property="empPosition" />
+    <result column="floor_name" jdbcType="VARCHAR" property="floorName"/>
+    <result column="floor_detail" jdbcType="VARCHAR" property="floorDetail"/>
+  </resultMap>
+  <sql id="Bse_easy_List">
+    emp.emp_id, emp.emp_num, emp.emp_name, emp.emp_sex, emp.emp_age, emp.emp_phone, emp.emp_address, emp.emp_position,
+    fl.floor_name, fl.floor_detail
+  </sql>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Tue Apr 21 14:21:57 CST 2020.-->
+    emp_id, emp_num, emp_name, emp_sex, emp_age, emp_phone, emp_address, emp_position, 
+    emp_floor_id, emp_del
+  </sql>
+
+  <sql id="Base_insert_easy_list">
+   emp_num, emp_name, emp_sex, emp_age, emp_phone, emp_address, emp_position, emp_floor_id
+  </sql>
+
+  <select id="selectEmpInfoByEmpName" resultMap="BaseEmpFloorMap">
+    select
+    <include refid="Bse_easy_List"></include>
+    from employee emp
+    left join floor fl
+    on emp.emp_floor_id = fl.floor_id
+    where emp.emp_del = 0
+    <if test="empName != null and empName != ''">
+      and emp.emp_name like CONCAT('%',#{empName,jdbcType=VARCHAR},'%')
+    </if>
+  </select>
+
+  <select id="selectEmpInfoByEmpNum" resultMap="BaseEmpFloorMap">
+    select
+    <include refid="Bse_easy_List"></include>
+    from employee emp
+    left join floor fl
+    on emp.emp_floor_id = fl.floor_id
+    where emp.emp_del = 0
+    <if test="empNum != null and empNum != ''">
+      and emp.emp_num like CONCAT('%',#{empNum,jdbcType=VARCHAR},'%')
+    </if>
+  </select>
+
+  <select id="selectAllFloorManagerInfoList" resultMap="BaseEmpFloorMap">
+    SELECT
+    <include refid="Bse_easy_List"></include>
+    FROM employee emp
+    LEFT JOIN floor fl
+    ON emp.emp_floor_id = fl.floor_id
+    <where>
+    emp.emp_del = 0
+    </where>
+  </select>
+
+  <update id="deleteOneFloorManagerInfo">
+    UPDATE employee emp
+    <set>
+      emp.emp_del = 1
+    </set>
+    <where>
+      <if test="empId != null">
+      emp.emp_id = #{empId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </update>
+
+  <insert id="insertOneFloorManagerInfo">
+    INSERT INTO
+    employee
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      emp_num, emp_name, emp_sex, emp_age, emp_phone, emp_address, emp_position,
+      <if test="empFloorId != null">
+      emp_floor_id
+      </if>
+    </trim>
+    VALUES
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      #{empNum,jdbcType=VARCHAR},
+      #{empName,jdbcType=VARCHAR},
+      #{empSex,jdbcType=VARCHAR},
+      #{empAge,jdbcType=INTEGER},
+      #{empPhone,jdbcType=VARCHAR},
+      #{empAddress,jdbcType=VARCHAR},
+      #{empPosition,jdbcType=VARCHAR},
+      <if test="empFloorId != null">
+      #{empFloorId,jdbcType=INTEGER}
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectFloorManagerInfoSame" resultType="java.lang.Integer">
+    SELECT COUNT(emp_id)
+    FROM employee emp
+    <trim prefix="where" suffix="LIMIT 1;" suffixOverrides="AND">
+      emp.emp_del = 0 AND
+      <if test="empNum != null and empNum != ''">
+        emp.emp_num = #{empNum,jdbcType=VARCHAR} AND
+      </if>
+      <if test="empPhone != null and empPhone != ''">
+        emp.emp_phone = #{empPhone,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </select>
+  
+  
+  <update id="updateFloorManagerInfoByException" parameterType="com.manager.domaindto.EmployeeDto">
+    update employee emp
+    <set>
+    <trim suffixOverrides=",">
+      <if test="empNum != null and empNum != ''">
+        emp.emp_num = #{empNum,jdbcType=VARCHAR},
+      </if>
+      <if test="empName != null and empName != ''">
+        emp.emp_name = #{empName,jdbcType=VARCHAR},
+      </if>
+      <if test="empSex != null and empSex != ''">
+        emp.emp_sex = #{empSex,jdbcType=VARCHAR},
+      </if>
+      <if test="empPhone != null and empPhone != ''">
+        emp.emp_phone = #{empPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="empAge != null">
+        emp.emp_age = #{empAge,jdbcType=INTEGER},
+      </if>
+      <if test="empAddress != null and empAddress != ''">
+        emp.emp_address = #{empAddress,jdbcType=VARCHAR}
+      </if>
+    </trim>
+    </set>
+    <where>
+      emp.emp_id = #{empId,jdbcType=INTEGER}
+    </where>
+  </update>
+
+
+
+</mapper>

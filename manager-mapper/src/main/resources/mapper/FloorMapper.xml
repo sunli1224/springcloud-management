@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manager.mapper.FloorMapper">
+  <resultMap id="BaseResultMap" type="com.manager.domain.Floor">
+    <!--@mbg.generated generated on Sun Mar 15 15:50:43 CST 2020.-->
+    <!--@Table floor-->
+    <id column="floor_id" jdbcType="INTEGER" property="floorId" />
+    <result column="floor_name" jdbcType="VARCHAR" property="floorName" />
+    <result column="floor_detail" jdbcType="VARCHAR" property="floorDetail" />
+  </resultMap>
+  <resultMap id="BaseFloorAndEmployee" type="com.manager.domaindto.floorDto">
+    <id column="floor_id" jdbcType="INTEGER" property="floorId" />
+    <result column="floor_name" jdbcType="VARCHAR" property="floorName" />
+    <result column="floor_detail" jdbcType="VARCHAR" property="floorDetail" />
+    <result column="emp_num" jdbcType="VARCHAR" property="empNum"/>
+    <result column="emp_name" jdbcType="VARCHAR" property="empName"/>
+    <result column="emp_phone" jdbcType="VARCHAR" property="empPhone"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Sun Mar 15 15:50:43 CST 2020.-->
+    floor_id, floor_name, floor_detail
+  </sql>
+  <sql id="Base_floor_emp_List">
+    fl.floor_id, fl.floor_name, fl.floor_detail, emp.emp_num, emp.emp_name, emp.emp_phone
+  </sql>
+
+  <select id="selectAllFloorListInfo" resultMap="BaseFloorAndEmployee">
+    SELECT
+    <include refid="Base_floor_emp_List"></include>
+    FROM floor fl
+    left JOIN employee emp
+    ON fl.floor_id = emp.emp_floor_id
+    <where>
+      fl.floor_del = 0
+    </where>
+  </select>
+
+  <select id="selectFloorListByFloorName" resultMap="BaseFloorAndEmployee">
+    SELECT
+    <include refid="Base_floor_emp_List"></include>
+    FROM floor fl
+    left join employee emp
+    on fl.floor_id = emp.emp_floor_id
+    WHERE fl.floor_del = 0
+    <if test="_parameter != null and _parameter != ''">
+    AND fl.floor_name like CONCAT('%',#{floorName,jdbcType=VARCHAR},'%')
+    </if>
+    ORDER BY fl.floor_id;
+  </select>
+
+
+  <update id="delOneFloorInfo">
+    update floor fl
+    <set>
+      fl.floor_del = 1
+    </set>
+    <where>
+      fl.floor_id = #{id,jdbcType=INTEGER}
+    </where>
+  </update>
+
+  <insert id="insertFloorInfo">
+    INSERT INTO
+    floor
+    <trim prefix="(" suffix=")">
+      floor_name, floor_detail
+    </trim>
+    VALUES
+    <trim suffix=")" prefix="(" prefixOverrides=",">
+      <if test="floorName != null and floorName != ''">
+      #{floorName,jdbcType=VARCHAR},
+      </if>
+      <if test="floorDetail != null and floorDetail != ''">
+      #{floorDetail,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectFloorIdByException" resultType="java.lang.Integer">
+    SELECT floor_id
+    FROM floor fl
+    <where>
+      <if test="floorName != null and floorName != ''">
+      fl.floor_name = #{floorName,jdbcType=VARCHAR}
+      </if>
+      LIMIT 1;
+    </where>
+  </select>
+
+  <select id="selectFloorIdNoFloorManager" resultMap="BaseFloorAndEmployee">
+    SELECT fl.floor_id, fl.floor_name
+    FROM floor fl
+    LEFT JOIN employee emp
+    ON emp.emp_floor_id = fl.floor_id
+    WHERE fl.floor_del = 0
+  </select>
+
+
+  <update id="updateFloorInfo">
+    update floor fl
+    <trim prefix="set" suffixOverrides=",">
+      <if test="floorName != null and floorName != ''">
+        fl.floor_name = #{floorName,jdbcType=VARCHAR},
+      </if>
+      <if test="floorDetail != null and floorDetail != ''">
+        fl.floor_detail = #{floorDetail,jdbcType=VARCHAR}
+      </if>
+    </trim>
+    <where>
+      <if test="floorId != null">
+        fl.floor_id = #{floorId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </update>
+
+</mapper>

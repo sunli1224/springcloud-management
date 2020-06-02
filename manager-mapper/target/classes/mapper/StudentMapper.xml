@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manager.mapper.StudentMapper">
+  <resultMap id="BaseResultMap" type="com.manager.domain.Student">
+    <!--@mbg.generated generated on Wed Mar 18 18:13:13 CST 2020.-->
+    <!--@Table student-->
+    <id column="stu_id" jdbcType="INTEGER" property="stuId" />
+    <result column="stu_num" jdbcType="VARCHAR" property="stuNum" />
+    <result column="stu_name" jdbcType="VARCHAR" property="stuName" />
+    <result column="stu_sex" jdbcType="VARCHAR" property="stuSex" />
+    <result column="stu_profession" jdbcType="VARCHAR" property="stuProfession" />
+    <result column="stu_class" jdbcType="VARCHAR" property="stuClass" />
+    <result column="stu_sess" jdbcType="VARCHAR" property="stuSess" />
+    <result column="stu_phone_number" jdbcType="VARCHAR" property="stuPhoneNumber" />
+    <result column="stu_hos_id" jdbcType="INTEGER" property="stuHosId" />
+    <result column="stu_floor_id" jdbcType="INTEGER" property="stuFloorId" />
+  </resultMap>
+  <resultMap id="StuAndFloorResultMap" type="com.manager.domain.StudentExtend">
+    <result column="stu_num" jdbcType="VARCHAR" property="stuNum" />
+    <result column="stu_name" jdbcType="VARCHAR" property="stuName" />
+    <result column="stu_sex" jdbcType="VARCHAR" property="stuSex" />
+    <result column="stu_profession" jdbcType="VARCHAR" property="stuProfession" />
+    <result column="stu_class" jdbcType="VARCHAR" property="stuClass" />
+    <result column="stu_sess" jdbcType="VARCHAR" property="stuSess" />
+    <result column="stu_phone_number" jdbcType="VARCHAR" property="stuPhoneNumber" />
+    <collection property="floorList" ofType="com.manager.domain.Floor">
+      <result column="floor_name" jdbcType="VARCHAR" property="floorName"/>
+      <result column="floor_detail" jdbcType="VARCHAR" property="floorDetail"/>
+    </collection>
+  </resultMap>
+  <resultMap id="StuAndHosAndFloorList" type="com.manager.domaindto.StudentDto">
+    <id column="stu_id" jdbcType="INTEGER" property="stuId" />
+    <result column="stu_num" jdbcType="VARCHAR" property="stuNum" />
+    <result column="stu_name" jdbcType="VARCHAR" property="stuName" />
+    <result column="stu_sex" jdbcType="VARCHAR" property="stuSex" />
+    <result column="stu_profession" jdbcType="VARCHAR" property="stuProfession" />
+    <result column="stu_class" jdbcType="VARCHAR" property="stuClass" />
+    <result column="stu_sess" jdbcType="VARCHAR" property="stuSess" />
+    <result column="stu_phone_number" jdbcType="VARCHAR" property="stuPhoneNumber" />
+    <result column="hos_num" jdbcType="VARCHAR" property="hosNum"/>
+    <result column="floor_name" jdbcType="VARCHAR" property="floorName"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Wed Mar 18 18:13:13 CST 2020.-->
+    stu_id, stu_num, stu_name, stu_sex, stu_profession, stu_class, stu_sess, stu_phone_number,
+    stu_hos_id, stu_floor_id
+  </sql>
+
+  <sql id="Base_Column_stu_floor_List">
+    stu_id, stu_num, stu_name, stu_sex, stu_profession, stu_class, stu_sess, stu_phone_number,
+    floor_name, floor_detail
+  </sql>
+
+  <sql id="Base_Column_stu_floor_hos_List">
+    stu_id, stu_num, stu_name, stu_sex, stu_profession, stu_class, stu_sess, stu_phone_number,
+    floor_name, floor_detail,
+    hos_num
+  </sql>
+
+  <select id="selectOneInfoByStuNumber" resultType="com.manager.domaindto.StudentDto">
+    select
+    <include refid="Base_Column_stu_floor_hos_List"></include>
+    from student stu
+    left join hostel h on stu.stu_hos_id = h.hos_id
+    left join floor f on stu.stu_floor_id = f.floor_id
+    <if test="stuNumber != null and stuNumber != ''">
+      <where>
+        stu.stu_num = #{stuNumber,jdbcType=VARCHAR} and stu.stu_del = 0
+      </where>
+    </if>
+  </select>
+
+  <select id="selectOneStudentByStuNumber" resultType="com.manager.domain.Student">
+    select
+    <include refid="Base_Column_stu_floor_hos_List"></include>
+    from student stu
+    left join hostel h on stu.stu_hos_id = h.hos_id
+    left join floor f on stu.stu_floor_id = f.floor_id
+    <if test="stuNumber != null and stuNumber != ''">
+    <where>
+      stu.stu_num = #{stuNumber,jdbcType=VARCHAR} and stu.stu_del = 0
+    </where>
+    </if>
+  </select>
+
+  <select id="selectAllStudentList" resultMap="StuAndHosAndFloorList">
+    select
+    <include refid="Base_Column_stu_floor_hos_List"></include>
+    from student stu
+    left join hostel h on stu.stu_hos_id = h.hos_id
+    left join floor f on stu.stu_floor_id = f.floor_id
+    <where>
+      stu.stu_del = 0
+    </where>
+  </select>
+
+  <select id="getAllByStuFloorId" resultMap="StuAndFloorResultMap">
+    select
+    <include refid="Base_Column_stu_floor_List"/>
+     from student stu left join floor f on stu.stu_floor_id = f.floor_id
+    <where>
+      stu.stu_del = 0
+    </where>
+  </select>
+
+  <select id="getStudnentListByStuName" resultMap="StuAndHosAndFloorList">
+    select
+    <include refid="Base_Column_stu_floor_hos_List"></include>
+    from student stu
+    left join hostel h on stu.stu_hos_id = h.hos_id
+    left join floor f on stu.stu_floor_id = f.floor_id
+    <where>
+      stu.stu_del = 0 and
+      stu.stu_name like CONCAT('%',#{stuName,jdbcType=VARCHAR},'%')
+    </where>
+  </select>
+
+  <select id="getStudnentListByStuNumber" resultMap="StuAndHosAndFloorList">
+    select
+    <include refid="Base_Column_stu_floor_hos_List"></include>
+    from student stu
+    left join hostel h on stu.stu_hos_id = h.hos_id
+    left join floor f on stu.stu_floor_id = f.floor_id
+    <where>
+      stu.stu_del = 0 and
+      stu.stu_num like CONCAT('%',#{stuNumber,jdbcType=VARCHAR},'%')
+    </where>
+  </select>
+
+
+  <update id="deleteStudent" parameterType="com.manager.domain.Student">
+    update `student` stu
+    <set>
+      stu.stu_del = 1
+    </set>
+    <where>
+      <if test="stuNumber != null and stuNumber != ''">
+        stu.stu_num = #{stuNumber,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </update>
+
+  <update id="updateOneStudent" parameterType="com.manager.domaindto.StudentDto">
+    update student stu
+    <set>
+      <if test="stuName != null and stuName != ''">
+        stu.stu_name = #{stuName,jdbcType=VARCHAR}
+      </if>
+      <if test="stuNum != null and stuNum != ''">
+        stu.stu_num = #{stuNum,jdbcType=VARCHAR}
+      </if>
+      <if test="stuSex != null and stuSex != ''">
+        stu.stu_sex = #{stuSex,jdbcType=VARCHAR}
+      </if>
+      <if test="stuProfession != null and stuProfession != ''">
+        stu.stu_profession = #{stuProfession,jdbcType=VARCHAR}
+      </if>
+      <if test="stuClass != null and stuClass != ''">
+        stu.stu_class = #{stuClass,jdbcType=VARCHAR}
+      </if>
+      <if test="stuSess != null and stuSess != ''">
+        stu.stu_sess = #{stuSess,jdbcType=VARCHAR}
+      </if>
+      <if test="stuPhoneNumber != null and stuPhoneNumber != ''">
+        stu.stu_phone_number = #{stuPhoneNumber,jdbcType=VARCHAR}
+      </if>
+    </set>
+    <where>
+      <if test="stuId != null">
+        stu.stu_del = 0 and stu.stu_id = #{stuId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </update>
+
+
+  <update id="updateStuInfoByStuNum">
+    update student
+    <trim prefix="set" suffixOverrides=",">
+      <if test="hosNum != null and hosNum != ''">
+        stu_hos_id = (
+        select hos.hos_id from hostel hos
+        left join floor f on hos.hos_floor_id = f.floor_id
+        where hos.hos_num = #{hosNum,jdbcType=VARCHAR}
+        and
+        f.floor_name = #{floorName,jdbcType=VARCHAR}
+        )
+        ,
+      </if>
+      <if test="floorName != null and floorName != ''">
+        stu_floor_id = (
+        select floor_id from floor fl
+        where fl.floor_name = #{floorName,jdbcType=VARCHAR}
+        )
+      </if>
+    </trim>
+    <where>
+      <if test="stuNum != null and stuNum != ''">
+        stu_num = #{stuNum,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </update>
+
+</mapper>

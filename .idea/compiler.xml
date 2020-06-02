@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="mybatis-generator" />
+        <module name="manager-mapper" />
+        <module name="manager-search" />
+        <module name="manager-domain" />
+        <module name="manager-nacos-provider" />
+        <module name="manager-auth-service" />
+        <module name="manager-redis-service" />
+        <module name="manager-gateway" />
+        <module name="manager-commons" />
+        <module name="manager-nacos-provider01" />
+        <module name="manager-nacos-consumer" />
+        <module name="manager-updownload-service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="manager-auth-resource" target="1.8" />
+      <module name="manager-auth-server" target="1.8" />
+      <module name="manager-auth-service" target="1.8" />
+      <module name="manager-commons" target="1.8" />
+      <module name="manager-dependencies" target="1.8" />
+      <module name="manager-domain" target="1.8" />
+      <module name="manager-gateway" target="1.8" />
+      <module name="manager-getway" target="1.8" />
+      <module name="manager-mapper" target="1.8" />
+      <module name="manager-nacos-consumer" target="1.8" />
+      <module name="manager-nacos-provider" target="1.8" />
+      <module name="manager-nacos-provider01" target="1.8" />
+      <module name="manager-redis-service" target="1.8" />
+      <module name="manager-search" target="1.8" />
+      <module name="manager-updownload-service" target="1.8" />
+      <module name="mybatis-generator" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="manager-auth-resource" options="-parameters" />
+      <module name="manager-auth-server" options="-parameters" />
+      <module name="manager-auth-service" options="-parameters" />
+      <module name="manager-commons" options="-parameters" />
+      <module name="manager-domain" options="-parameters" />
+      <module name="manager-gateway" options="-parameters" />
+      <module name="manager-getway" options="-parameters" />
+      <module name="manager-mapper" options="-parameters" />
+      <module name="manager-nacos-consumer" options="-parameters" />
+      <module name="manager-nacos-provider" options="-parameters" />
+      <module name="manager-nacos-provider01" options="-parameters" />
+      <module name="manager-redis-service" options="-parameters" />
+      <module name="manager-search" options="-parameters" />
+      <module name="manager-updownload-service" options="-parameters" />
+      <module name="mybatis-generator" options="-parameters" />
+    </option>
+  </component>
+</project>

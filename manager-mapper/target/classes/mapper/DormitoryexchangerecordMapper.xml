@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manager.mapper.DormitoryexchangerecordMapper">
+  <resultMap id="BaseResultMap" type="com.manager.domain.Dormitoryexchangerecord">
+    <!--@mbg.generated generated on Sun Mar 15 15:50:55 CST 2020.-->
+    <!--@Table dormitoryexchangerecord-->
+    <id column="der_id" jdbcType="INTEGER" property="derId" />
+    <result column="stu_num" jdbcType="VARCHAR" property="stuNum" />
+    <result column="stu_name" jdbcType="VARCHAR" property="stuName" />
+    <result column="old_floor_name" jdbcType="VARCHAR" property="oldFloorName" />
+    <result column="old_hos_name" jdbcType="VARCHAR" property="oldHosName" />
+    <result column="new_floor_name" jdbcType="VARCHAR" property="newFloorName" />
+    <result column="new_hos_name" jdbcType="VARCHAR" property="newHosName" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
+    <result column="recod_time" jdbcType="TIMESTAMP" property="recodTime" />
+  </resultMap>
+  <resultMap id="BaseEasyMap" type="com.manager.domaindto.DormitoryexchangerecordDto">
+    <!--@mbg.generated generated on Sun Mar 15 15:50:55 CST 2020.-->
+    <!--@Table dormitoryexchangerecord-->
+    <result column="der_id" jdbcType="INTEGER" property="derId" />
+    <result column="stu_num" jdbcType="VARCHAR" property="stuNum" />
+    <result column="stu_name" jdbcType="VARCHAR" property="stuName" />
+    <result column="old_floor_name" jdbcType="VARCHAR" property="oldFloorName" />
+    <result column="old_hos_name" jdbcType="VARCHAR" property="oldHosName" />
+    <result column="new_floor_name" jdbcType="VARCHAR" property="newFloorName" />
+    <result column="new_hos_name" jdbcType="VARCHAR" property="newHosName" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
+    <result column="recod_time" jdbcType="TIMESTAMP" property="recodTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Sun Mar 15 15:50:55 CST 2020.-->
+    der_id, stu_num, stu_name, old_floor_name, old_hos_name, new_floor_name, new_hos_name, 
+    detail, recod_time
+  </sql>
+
+  <select id="selectAllDerInfoList" resultMap="BaseEasyMap">
+    select
+    <include refid="Base_Column_List"></include>
+    FROM dormitoryexchangerecord dor
+    <where>
+      dor.der_del = 0
+    </where>
+  </select>
+
+  <update id="delOneDerInfoByDerId">
+    update dormitoryexchangerecord dor
+    <set>
+      dor.der_del = 1
+    </set>
+    <where>
+      <if test="derId != null">
+        dor.der_id = #{derId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </update>
+
+  <insert id="insertOneDerInfo">
+    insert into dormitoryexchangerecord
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stuNum != null and stuNum != ''">
+        stu_num,
+      </if>
+      <if test="stuName != null and stuName != ''">
+        stu_name,
+      </if>
+      <if test="oldFloorName != null and oldFloorName != ''">
+        old_floor_name,
+      </if>
+      <if test="oldHosName != null and oldHosName != ''">
+        old_hos_name,
+      </if>
+      <if test="newFloorName != null and newFloorName != ''">
+        new_floor_name,
+      </if>
+      <if test="newHosName != null and newHosName != ''">
+        new_hos_name,
+      </if>
+      <if test="detail != null and detail != ''">
+        detail,
+      </if>
+      <if test="recodTime != null">
+        recod_time
+      </if>
+    </trim>
+      values
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="stuNum != null and stuNum != ''">
+          #{stuNum,jdbcType=VARCHAR},
+        </if>
+        <if test="stuName != null and stuName != ''">
+          #{stuName,jdbcType=VARCHAR},
+        </if>
+        <if test="oldFloorName != null and oldFloorName != ''">
+          #{oldFloorName,jdbcType=VARCHAR},
+        </if>
+        <if test="oldHosName != null and oldHosName != ''">
+          #{oldHosName,jdbcType=VARCHAR},
+        </if>
+        <if test="newFloorName != null and newFloorName != ''">
+          #{newFloorName,jdbcType=VARCHAR},
+        </if>
+        <if test="newHosName != null and newHosName != ''">
+          #{newHosName,jdbcType=VARCHAR},
+        </if>
+        <if test="detail != null and detail != ''">
+          #{detail,jdbcType=VARCHAR},
+        </if>
+        <if test="recodTime != null">
+          #{recodTime,jdbcType=TIMESTAMP}
+        </if>
+      </trim>
+  </insert>
+
+  <select id="selectDerInfoByStuNameOrStuNum" resultMap="BaseEasyMap">
+    select
+    <include refid="Base_Column_List"/>
+    from dormitoryexchangerecord
+    <trim prefix="where" suffixOverrides="and">
+      der_del = 0 and
+      <if test="stuName != null and stuName != ''">
+        stu_name like CONCAT('%',#{stuName,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="stuNum != null and stuNum != ''">
+        stu_num like CONCAT('%',#{stuNum,jdbcType=VARCHAR},'%')
+      </if>
+    </trim>
+  </select>
+
+  <update id="updateDerInfoByDerId">
+    update dormitoryexchangerecord
+    <trim prefix="set" suffixOverrides=",">
+      <if test="stuNum != null and stuNum != ''">
+        stu_num= #{stuNum,jdbcType=VARCHAR},
+      </if>
+      <if test="stuName != null and stuName != ''">
+        stu_name = #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="oldFloorName != null and oldFloorName != ''">
+        old_floor_name = #{oldFloorName,jdbcType=VARCHAR},
+      </if>
+      <if test="oldHosName != null and oldHosName != ''">
+        old_hos_name = #{oldHosName,jdbcType=VARCHAR},
+      </if>
+      <if test="newFloorName != null and newFloorName != ''">
+       new_floor_name =  #{newFloorName,jdbcType=VARCHAR},
+      </if>
+      <if test="newHosName != null and newHosName != ''">
+        new_hos_name = #{newHosName,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null and detail != ''">
+        detail = #{detail,jdbcType=VARCHAR}
+      </if>
+    </trim>
+    <where>
+      <if test="derId != null">
+        der_id = #{derId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </update>
+</mapper>

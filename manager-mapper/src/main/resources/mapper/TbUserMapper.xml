@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manager.mapper.TbUserMapper">
+  <resultMap id="BaseResultMap" type="com.manager.domain.TbUser">
+    <!--@mbg.generated generated on Tue Mar 24 00:49:55 CST 2020.-->
+    <!--@Table tb_user-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="imge" jdbcType="LONGVARCHAR" property="imge" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+  </resultMap>
+  <resultMap id="BaseEasytMap" type="com.manager.domaindto.UserDto">
+    <!--@mbg.generated generated on Tue Mar 24 00:49:55 CST 2020.-->
+    <!--@Table tb_user-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="imge" jdbcType="LONGVARCHAR" property="imge" />
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="enname" jdbcType="VARCHAR" property="enname"/>
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+  </resultMap>
+  <resultMap id="Base_user_role_pemisson" type="com.manager.domain.TbUser">
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <collection property="roleList" ofType="com.manager.domain.TbRole">
+      <result column="enname" jdbcType="VARCHAR" property="enname"/>
+      <collection property="permissionList" ofType="com.manager.domain.TbPermission">
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+      </collection>
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Tue Mar 24 00:49:55 CST 2020.-->
+    id, username, `password`, phone, email, imge, created, updated
+  </sql>
+
+  <insert id="insertOneUserInfo">
+    insert into
+    tb_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="username != null and username != ''">
+        username,
+      </if>
+      <if test="password != null and password != ''">
+        password,
+      </if>
+      <if test="phone != null and phone != ''">
+        phone,
+      </if>
+      <if test="email != null and email != ''">
+        email,
+      </if>
+      <if test="imge != null and imge != ''">
+        imge,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated
+      </if>
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="username != null and username != ''">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null and password != ''">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null and phone != ''">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null and email != ''">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="imge != null and imge != ''">
+        #{imge,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+  </insert>
+
+  <insert id="insertRoleAndUser" >
+    insert into tb_user_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      user_id,
+      role_id
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      (select u.id  from tb_user u where u.username = #{username,jdbcType=VARCHAR}),
+      (select ro.id from tb_role ro where ro.name = #{name,jdbcType=VARCHAR})
+    </trim>
+  </insert>
+
+  <update id="updateUserRole">
+    update tb_user_role
+    <trim prefix="set" suffixOverrides=",">
+      role_id = (select tr.id from tb_role tr where tr.name = #{name,jdbcType=VARCHAR})
+    </trim>
+    <where>
+      user_id = #{id,jdbcType=BIGINT}
+    </where>
+  </update>
+
+  <delete id="deleteOneUserInfo">
+    delete from tb_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+
+
+  <select id="selectAllUserInfo" resultMap="BaseEasytMap">
+    select
+    u.id, u.username, u.`password`, u.phone, u.email, u.imge,u.created, u.updated,
+    tr.name, tr.enname
+    from
+    tb_user u
+    left outer join tb_user_role tur on u.id = tur.user_id
+    left outer join tb_role tr on tur.role_id = tr.id
+  </select>
+
+<select id="getUserInfoByUserName" resultMap="BaseEasytMap">
+  select
+    u.id, u.username, u.`password`, u.phone, u.email, u.imge,u.created, u.updated,
+    tr.name, tr.enname
+    from
+    tb_user u
+    left outer join tb_user_role tur on u.id = tur.user_id
+    left outer join tb_role tr on tur.role_id = tr.id
+    <where>
+      <if test="username != null and username != ''">
+        u.username = #{username,jdbcType=VARCHAR}
+      </if>
+    </where>
+</select>
+
+  <select id="selectUserInfoByUserName" resultMap="BaseEasytMap">
+    select
+    u.id, u.username, u.`password`, u.phone, u.email, u.imge,u.created, u.updated,
+    tr.name, tr.enname
+    from
+    tb_user u
+    left outer join tb_user_role tur on u.id = tur.user_id
+    left outer join tb_role tr on tur.role_id = tr.id
+    where u.username like CONCAT('%',#{username,jdbcType=VARCHAR},'%')
+  </select>
+
+  <update id="updateUserImg">
+    update tb_user
+    <trim prefix="set" suffixOverrides=",">
+      <if test="img != null and img != ''">
+        imge = #{img,jdbcType=VARCHAR},
+      </if>
+    </trim>
+    <where>
+      <if test="id != null">
+        id = #{id,jdbcType=BIGINT}
+      </if>
+    </where>
+  </update>
+
+  <update id="updateUserPass">
+    update tb_user
+    <trim prefix="set" suffixOverrides=",">
+      <if test="password != null and password != ''">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+    </trim>
+    <where>
+      <if test="id != null">
+        id = #{id,jdbcType=BIGINT}
+      </if>
+    </where>
+  </update>
+
+
+  <update id="updateUserInfo">
+    update tb_user
+    <trim prefix="set" suffixOverrides=",">
+      <if test="username != null and username != ''">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null and password != ''">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null and phone != ''">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null and email != ''">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        updated = #{updated,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+    <where>
+      <if test="id != null">
+        id = #{id,jdbcType=BIGINT}
+      </if>
+    </where>
+  </update>
+
+  <select id="selectOneUserByUserName" resultMap="Base_user_role_pemisson">
+    select tb.username,tr.enname,tp.name
+    from tb_user tb
+    left outer join tb_user_role tur on tb.id = tur.user_id
+    left outer join tb_role tr on tur.role_id = tr.id
+    left outer join tb_role_permission trp on tur.role_id = trp.role_id
+    left outer join tb_permission tp on trp.permission_id = tp.id
+    <where>
+      tb.username = #{username,jdbcType=VARCHAR}
+      and
+    </where>
+  </select>
+
+  <select id="selectOneByUserName" resultType="com.manager.domaindto.UserDto">
+    select
+    <include refid="Base_Column_List"/>
+    from
+    tb_user tb
+    <where>
+      <if test="username != null and username != ''">
+        tb.username = #{username,jdbcType=VARCHAR}
+      </if>
+    </where>
+    limit 1
+  </select>
+
+
+
+</mapper>

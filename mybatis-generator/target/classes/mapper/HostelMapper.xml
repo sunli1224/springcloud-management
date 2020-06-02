@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manager.mapper.HostelMapper">
+  <resultMap id="BaseResultMap" type="com.manager.domain.Hostel">
+    <!--@mbg.generated generated on Thu Apr 23 16:48:06 CST 2020.-->
+    <!--@Table hostel-->
+    <id column="hos_id" jdbcType="INTEGER" property="hosId" />
+    <result column="hos_num" jdbcType="VARCHAR" property="hosNum" />
+    <result column="hos_new_stu_num" jdbcType="INTEGER" property="hosNewStuNum" />
+    <result column="hos_old_stu_num" jdbcType="INTEGER" property="hosOldStuNum" />
+    <result column="hos_floor_id" jdbcType="INTEGER" property="hosFloorId" />
+    <result column="hostel_del" jdbcType="INTEGER" property="hostelDel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Thu Apr 23 16:48:06 CST 2020.-->
+    hos_id, hos_num, hos_new_stu_num, hos_old_stu_num, hos_floor_id, hostel_del
+  </sql>
+</mapper>

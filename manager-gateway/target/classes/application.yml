@@ -1,0 +1,72 @@
+spring:
+  profiles:
+    active: all
+#spring:
+#  cloud:
+#    gateway:
+#      globalcors:
+#        corsConfigurations:
+#          '[/**]':
+#            allowedHeaders: "*"
+#            allowedOrigins: "*"
+#            allowedMethods:
+#              - GET
+#                POST
+#                DELETE
+#                PUT
+#                OPTION
+#  profiles:
+#    active: all
+#spring:
+#  application:
+#    # 应用名称
+#    name: spring-gateway-service
+#  cloud:
+#    # 使用 Naoos 作为服务注册发现
+#    nacos:
+#      discovery:
+#        server-addr: 127.0.0.1:8848
+#     使用 Sentinel 作为熔断器
+#    sentinel:
+#      transport:
+#        port: 8721
+#        dashboard: localhost:8080
+#    gateway:
+#      routes:
+#        - id: auth-user-provider
+#          uri: lb://auth-user-provider
+#          predicates:
+#            - Method=GET,POST
+#        - id: nacos-user-provider
+#          uri: lb://nacos-user-provider
+#          predicates:
+#            - Method=GET,POST
+#      discovery:
+#        locator:
+#          enabled: true
+#
+#
+#server:
+#  port: 9785
+#
+## 目前无效
+##feign:
+##  sentinel:
+##    enabled: true
+#
+## 目前无效
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#
+## 配置日志级别，方别调试
+#logging:
+#  level:
+#    org.springframework.cloud.gateway: debug
+
+
+#spring-cloud-oAth2配置
+
+

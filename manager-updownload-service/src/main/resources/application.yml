@@ -1,0 +1,7 @@
+#reids设置
+spring:
+  profiles:
+    active: dev
+upload:
+  file:
+    path: E:\springBootProject\manager-spring-cloud-alibaba\ImagePath\

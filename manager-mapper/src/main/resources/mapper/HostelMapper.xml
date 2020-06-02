@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manager.mapper.HostelMapper">
+  <resultMap id="BaseResultMap" type="com.manager.domain.Hostel">
+    <!--@mbg.generated generated on Thu Apr 23 16:48:06 CST 2020.-->
+    <!--@Table hostel-->
+    <id column="hos_id" jdbcType="INTEGER" property="hosId" />
+    <result column="hos_num" jdbcType="VARCHAR" property="hosNum" />
+    <result column="hos_new_stu_num" jdbcType="INTEGER" property="hosNewStuNum" />
+    <result column="hos_old_stu_num" jdbcType="INTEGER" property="hosOldStuNum" />
+    <result column="hos_floor_id" jdbcType="INTEGER" property="hosFloorId" />
+    <result column="hostel_del" jdbcType="INTEGER" property="hostelDel" />
+  </resultMap>
+  <resultMap id="Base_hostel_floor_map" type="com.manager.domaindto.HostelDto">
+    <id column="hos_id" jdbcType="INTEGER" property="hosId" />
+    <result column="hos_num" jdbcType="VARCHAR" property="hosNum" />
+    <result column="hos_new_stu_num" jdbcType="INTEGER" property="hosNewStuNum" />
+    <result column="hos_old_stu_num" jdbcType="INTEGER" property="hosOldStuNum" />
+    <result column="floor_name" jdbcType="VARCHAR" property="floorName"/>
+    <result column="floor_detail" jdbcType="VARCHAR" property="floorDetail"/>
+  </resultMap>
+  <resultMap id="Base_Remaing_hostel_floor_map" type="com.manager.domaindto.HostelDto">
+    <id column="hos_id" jdbcType="INTEGER" property="hosId" />
+    <result column="hos_num" jdbcType="VARCHAR" property="hosNum" />
+    <result column="hos_new_stu_num" jdbcType="INTEGER" property="hosNewStuNum" />
+    <result column="hos_old_stu_num" jdbcType="INTEGER" property="hosOldStuNum" />
+    <result column="floor_name" jdbcType="VARCHAR" property="floorName"/>
+    <result column="floor_detail" jdbcType="VARCHAR" property="floorDetail"/>
+    <result column="remaining" jdbcType="INTEGER" property="remaining"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Thu Apr 23 16:48:06 CST 2020.-->
+    hos_id, hos_num, hos_new_stu_num, hos_old_stu_num, hos_floor_id, hostel_del
+  </sql>
+  
+  
+  <select id="selectRemaingHosByFloorName" resultMap="Base_Remaing_hostel_floor_map">
+    SELECT	hos.hos_id, hos.hos_num, fl.floor_name, fl.floor_detail, hos.hos_new_stu_num, hos.hos_old_stu_num, (hos.hos_old_stu_num - hos.hos_new_stu_num) remaining  from hostel hos
+    LEFT JOIN floor fl
+    ON hos.hos_floor_id = fl.floor_id
+    WHERE hos.hostel_del= 0 and fl.floor_del = 0
+    and hos.hos_new_stu_num <![CDATA[ < ]]> 6 and
+    fl.floor_name = #{floorName,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectHosByFloorName" resultMap="Base_hostel_floor_map">
+    select hos.hos_id,hos.hos_num
+    from hostel hos
+    left join floor f on hos.hos_floor_id = f.floor_id
+    where hos.hostel_del = 0
+    AND f.floor_del = 0
+    and f.floor_name = #{floorName,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectHostelFloorInfoByHosId" resultMap="Base_hostel_floor_map">
+    select hos.hos_id,hos.hos_num,hos.hos_new_stu_num,hos.hos_old_stu_num,fl.floor_name,fl.floor_detail
+    FROM hostel hos
+    LEFT JOIN floor fl
+    ON fl.floor_id = hos.hos_floor_id
+    WHERE hos.hostel_del = 0 AND fl.floor_del = 0
+    <trim prefix="AND" suffixOverrides="AND">
+    <if test="hosId != null">
+      hos.hos_id = #{hosId,jdbcType=INTEGER} AND
+    </if>
+      <if test="floorName != null and floorName != ''">
+        fl.floor_name = #{floorName,jdbcType=VARCHAR} AND
+      </if>
+      <if test="hosNum != null and hosNum != ''">
+        hos.hos_num = #{hosNum,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </select>
+
+  <select id="selectHostelInfoList" resultMap="Base_hostel_floor_map">
+    SELECT hos.hos_id,hos.hos_num,hos.hos_new_stu_num,hos.hos_old_stu_num,fl.floor_name,fl.floor_detail
+    FROM hostel hos
+    LEFT JOIN floor fl
+    ON fl.floor_id = hos.hos_floor_id
+    WHERE hos.hostel_del = 0 AND fl.floor_del = 0
+  </select>
+
+  <insert id="insertOneHostelInfo">
+    INSERT INTO
+    hostel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="hosNum != null and hosNum != ''">
+      hos_num,
+      </if>
+      <if test="hosNewStuNum != null">
+      hos_new_stu_num,
+      </if>
+      <if test="hosOldStuNum != null">
+      hos_old_stu_num,
+      </if>
+      <if test="hosFloorId != null">
+      hos_floor_id
+      </if>
+    </trim>
+    VALUES
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="hosNum != null and hosNum != ''">
+        #{hosNum,jdbcType=VARCHAR},
+      </if>
+      <if test="hosNewStuNum != null">
+        #{hosNewStuNum,jdbcType=INTEGER},
+      </if>
+      <if test="hosOldStuNum != null">
+        #{hosOldStuNum,jdbcType=INTEGER},
+      </if>
+      <if test="hosFloorId != null">
+        #{hosFloorId,jdbcType=INTEGER}
+      </if>
+    </trim>
+  </insert>
+
+
+  <select id="selectFloorHostelList" resultType="java.lang.String">
+    SELECT hos.hos_num
+    FROM hostel hos
+    LEFT JOIN floor fl
+    ON hos.hos_floor_id = fl.floor_id
+    WHERE fl.floor_name = #{floorName,jdbcType=VARCHAR}
+    AND fl.floor_del = 0 AND hos.hostel_del = 0;
+  </select>
+
+  <update id="deleteHostelInfo">
+    update hostel hos
+    <set>
+      hos.hostel_del = 1
+    </set>
+    <where>
+      <if test="hosId != null">
+        hos.hos_id = #{hosId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </update>
+
+
+  <update id="updateHostelInfo" parameterType="com.manager.domaindto.HostelDto">
+    update hostel hos
+    <trim prefix="set" suffixOverrides=",">
+      <if test="hosNum != null and hosNum != ''">
+        hos.hos_num = #{hosNum,jdbcType=VARCHAR}
+      </if>
+      <if test="hosNewStuNum != null">
+        hos.hos_new_stu_num = #{hosNewStuNum,jdbcType=INTEGER}
+      </if>
+      <if test="hosOldStuNum != null">
+        hos.hos_old_stu_num = #{hosOldStuNum,jdbcType=INTEGER}
+      </if>
+      <if test="hosFloorId != null">
+        hos.hos_floor_id = #{hosFloorId,jdbcType=INTEGER}
+      </if>
+    </trim>
+    <where>
+      <if test="hosId != null">
+        hos.hos_id = #{hosId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </update>
+
+  <select id="selectHostelInfoByHosNumOrFloorName" resultMap="Base_hostel_floor_map">
+    SELECT hos.hos_id,hos.hos_num,hos.hos_new_stu_num,hos.hos_old_stu_num,f.floor_name,f.floor_detail
+    FROM hostel hos
+    left join floor f on hos.hos_floor_id = f.floor_id
+    <trim prefix="where" suffixOverrides="and">
+      hos.hostel_del = 0 and f.floor_del = 0 and
+      <if test="floorName != null and floorName != ''">
+        f.floor_name like CONCAT('%',#{floorName,jdbcType=VARCHAR},'%') and
+      </if>
+      <if test="hosNum != null and hosNum != ''">
+        hos.hos_num like CONCAT('%',#{hosNum,jdbcType=VARCHAR},'%')
+      </if>
+    </trim>
+  </select>
+
+  <update id="updateAddHosNum">
+    update hostel hos
+    <set>
+      hos.hos_new_stu_num = hos.hos_new_stu_num + 1
+    </set>
+    <where>
+      hos.hos_num = #{hosNum,jdbcType=VARCHAR}
+      and
+      hos.hos_floor_id = (
+      select fl.floor_id from floor fl
+      where fl.floor_name = #{floorName,jdbcType=VARCHAR}
+      )
+    </where>
+  </update>
+
+  <update id="updateDelHosNum">
+    update hostel hos
+    <set>
+      hos.hos_new_stu_num = hos.hos_new_stu_num - 1
+    </set>
+    <where>
+      hos.hos_num = #{hosNum,jdbcType=VARCHAR}
+      and
+      hos.hos_floor_id = (
+      select fl.floor_id from floor fl
+      where fl.floor_name = #{floorName,jdbcType=VARCHAR}
+      )
+    </where>
+  </update>
+
+</mapper>

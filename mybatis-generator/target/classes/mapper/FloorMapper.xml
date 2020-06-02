@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manager.mapper.FloorMapper">
+  <resultMap id="BaseResultMap" type="com.manager.domain.Floor">
+    <!--@mbg.generated generated on Mon Apr 20 03:40:27 CST 2020.-->
+    <!--@Table floor-->
+    <id column="floor_id" jdbcType="INTEGER" property="floorId" />
+    <result column="floor_name" jdbcType="VARCHAR" property="floorName" />
+    <result column="floor_detail" jdbcType="VARCHAR" property="floorDetail" />
+    <result column="floor_del" jdbcType="INTEGER" property="floorDel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Mon Apr 20 03:40:27 CST 2020.-->
+    floor_id, floor_name, floor_detail, floor_del
+  </sql>
+</mapper>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manager.mapper.RecordMapper">
+  <resultMap id="BaseResultMap" type="com.manager.domain.Record">
+    <!--@mbg.generated generated on Sun Mar 15 15:50:28 CST 2020.-->
+    <!--@Table record-->
+    <id column="recod_id" jdbcType="INTEGER" property="recodId" />
+    <result column="stu_num" jdbcType="VARCHAR" property="stuNum" />
+    <result column="stu_name" jdbcType="VARCHAR" property="stuName" />
+    <result column="floor_name" jdbcType="VARCHAR" property="floorName" />
+    <result column="hos_name" jdbcType="VARCHAR" property="hosName" />
+    <result column="recod_time" jdbcType="TIMESTAMP" property="recodTime" />
+    <result column="record_detail" jdbcType="VARCHAR" property="recordDetail" />
+  </resultMap>
+  <resultMap id="BaseEasyMap" type="com.manager.domaindto.RecordDto">
+    <id column="recod_id" jdbcType="INTEGER" property="recodId" />
+    <result column="stu_num" jdbcType="VARCHAR" property="stuNum" />
+    <result column="stu_name" jdbcType="VARCHAR" property="stuName" />
+    <result column="floor_name" jdbcType="VARCHAR" property="floorName" />
+    <result column="hos_name" jdbcType="VARCHAR" property="hosName" />
+    <result column="recod_time" jdbcType="TIMESTAMP" property="recodTime" />
+    <result column="record_detail" jdbcType="VARCHAR" property="recordDetail" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Sun Mar 15 15:50:28 CST 2020.-->
+    recod_id, stu_num, stu_name, floor_name, hos_name, recod_time, record_detail
+  </sql>
+  <select id="selectAllRecord" resultMap="BaseEasyMap">
+    select
+    <include refid="Base_Column_List"/>
+    from record re
+    where re.record_del = 0
+  </select>
+
+  <update id="delRecordInfoByRecordId" parameterType="java.lang.Integer">
+    update record
+    <set>
+      record.record_del = 1
+    </set>
+    <where>
+      <if test="id != null">
+      record.recod_id = #{id,jdbcType=INTEGER}
+      </if>
+    </where>
+  </update>
+
+  <insert id="insertOneRecordInfo">
+    insert into
+    record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stuNum != null and stuNum != ''">
+        stu_num,
+      </if>
+      <if test="floorName != null and floorName != ''">
+        stu_name,
+      </if>
+      <if test="floorName != null and floorName != ''">
+        floor_name,
+      </if>
+      <if test="hosName != null and hosName != ''">
+        hos_name,
+      </if>
+      <if test="recodTime != null">
+        recod_time,
+      </if>
+      <if test="recordDetail != null">
+        record_detail
+      </if>
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stuNum != null and stuNum != ''">
+        #{stuNum,jdbcType=VARCHAR},
+      </if>
+      <if test="stuName != null and stuName != ''">
+        #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="floorName != null and floorName != ''">
+        #{floorName,jdbcType=VARCHAR},
+      </if>
+      <if test="hosName != null and hosName != ''">
+        #{hosName,jdbcType=VARCHAR},
+      </if>
+      <if test="recodTime != null">
+        #{recodTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordDetail != null">
+        #{recordDetail,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateOneRecordInfo" parameterType="com.manager.domaindto.RecordDto">
+    update record
+    <set>
+      <trim suffixOverrides=",">
+      <if test="stuNum != null and stuNum != ''">
+        stu_num = #{stuNum,jdbcType=VARCHAR},
+      </if>
+      <if test="stuName != null and stuName != ''">
+        stu_name = #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="floorName != null and floorName != ''">
+        floor_name = #{floorName,jdbcType=VARCHAR},
+      </if>
+      <if test="hosName != null and hosName != ''">
+       hos_name =  #{hosName,jdbcType=VARCHAR},
+      </if>
+      <if test="recordDetail != null and recordDetail != ''">
+        record_detail = #{recordDetail,jdbcType=VARCHAR}
+      </if>
+      </trim>
+    </set>
+    <where>
+      recod_id = #{recodId,jdbcType=INTEGER}
+    </where>
+  </update>
+
+  <select id="selectRecordInfoByStuNameORStuNumber" resultMap="BaseEasyMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from record re
+    <trim prefix="where" suffixOverrides="and">
+      re.record_del = 0 and
+      <if test="stuName != null and stuName != ''">
+        stu_name like CONCAT('%',#{stuName,jdbcType=VARCHAR},'%') and
+      </if>
+      <if test="stuNumber != null and stuNumber != ''">
+        stu_num like CONCAT('%',#{stuNumber,jdbcType=VARCHAR},'%')
+      </if>
+    </trim>
+  </select>
+</mapper>

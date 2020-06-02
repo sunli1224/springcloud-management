@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manager.mapper.EmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.manager.domain.Employee">
+    <!--@mbg.generated generated on Tue Apr 21 14:21:57 CST 2020.-->
+    <!--@Table employee-->
+    <id column="emp_id" jdbcType="INTEGER" property="empId" />
+    <result column="emp_num" jdbcType="VARCHAR" property="empNum" />
+    <result column="emp_name" jdbcType="VARCHAR" property="empName" />
+    <result column="emp_sex" jdbcType="VARCHAR" property="empSex" />
+    <result column="emp_age" jdbcType="INTEGER" property="empAge" />
+    <result column="emp_phone" jdbcType="VARCHAR" property="empPhone" />
+    <result column="emp_address" jdbcType="VARCHAR" property="empAddress" />
+    <result column="emp_position" jdbcType="VARCHAR" property="empPosition" />
+    <result column="emp_floor_id" jdbcType="INTEGER" property="empFloorId" />
+    <result column="emp_del" jdbcType="INTEGER" property="empDel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Tue Apr 21 14:21:57 CST 2020.-->
+    emp_id, emp_num, emp_name, emp_sex, emp_age, emp_phone, emp_address, emp_position, 
+    emp_floor_id, emp_del
+  </sql>
+</mapper>

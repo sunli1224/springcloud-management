@@ -1,0 +1,3 @@
+com\manager\consumer\managerConsumerApplication.class
+com\manager\consumer\config\ApplicationContextConfig.class
+com\manager\consumer\controller\TestController.class
